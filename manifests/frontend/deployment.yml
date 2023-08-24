@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moneymaker-app
+  annotations:
+    app.komodor.com/app: https://github.com/kostis-codefresh/komodor-demo
+    app.komodor.com/app.ref: {{CF_REVISION}}     
+    app.komodor.com/deploy.job.jenkins: {{CF_BUILD_URL}}
+    app.komodor.com/service.link.grafana-overall-system-health: "https://grafana.com/orgs/kostis"
+    app.kubernetes.io/component: frontend
+    app.komodor.com/label.team: frontend
+spec:
+  revisionHistoryLimit: 0
+  replicas: 2
+  selector:
+    matchLabels:
+      app: loan
+  template:
+    metadata:
+      labels:
+        app: loan
+    spec:
+      containers:
+      - name: loan
+        image: docker.io/kostiscodefresh/loan:{{CF_SHORT_REVISION}} 
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080  

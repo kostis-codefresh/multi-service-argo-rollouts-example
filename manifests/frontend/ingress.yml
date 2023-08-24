@@ -1,0 +1,15 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: "komodor-demo-ing"
+  annotations:
+    kubernetes.io/ingress.class: ambassador
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /loan/
+            backend:
+              serviceName: loan
+              servicePort: 8080
