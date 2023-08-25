@@ -22,6 +22,11 @@ func main() {
 	}
 
 	// Kubernetes check if app is ok
+	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, app_version)
+	})
+
+	// Kubernetes check if app is ok
 	http.HandleFunc("/health/live", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "up")
 	})
