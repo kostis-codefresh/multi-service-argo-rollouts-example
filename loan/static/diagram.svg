@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="297mm"
+   height="120mm"
+   viewBox="0 0 297 120"
    version="1.1"
    id="svg1"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.2214497"
-     inkscape:cx="153.91547"
-     inkscape:cy="165.78661"
+     inkscape:zoom="0.49577877"
+     inkscape:cx="560.73397"
+     inkscape:cy="793.70079"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
      inkscape:window-x="-9"
@@ -82,80 +82,80 @@
        id="rect1"
        width="61.096062"
        height="31.779438"
-       x="16.227446"
-       y="32.832272"
+       x="55.719185"
+       y="48.308765"
        ry="6.5648522" />
     <path
-       style="fill:#78ef65;stroke:#000000;stroke-width:1;marker-end:url(#Triangle);stroke-dasharray:none"
-       d="M -15.374179,50.606674 H 11.370487"
+       style="fill:#78ef65;stroke:#000000;stroke-width:1;stroke-dasharray:none;marker-end:url(#Triangle)"
+       d="M 24.117562,66.083167 H 50.862228"
        id="path2" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
-       x="30.480858"
-       y="50.867596"
+       x="69.972595"
+       y="66.344086"
        id="text2"><tspan
          sodipodi:role="line"
          id="tspan2"
          style="font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
-         x="30.480858"
-         y="50.867596">{{.fv}}</tspan></text>
+         x="69.972595"
+         y="66.344086">{{.FV}}</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
-       x="26.584518"
-       y="28.346142"
+       x="66.076256"
+       y="43.822636"
        id="text3"><tspan
          sodipodi:role="line"
          id="tspan3"
          style="font-size:7.05556px;stroke-width:0.4;stroke-dasharray:none"
-         x="26.584518"
-         y="28.346142">Frontend</tspan></text>
+         x="66.076256"
+         y="43.822636">Frontend</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
-       x="-19.581848"
-       y="60.62677"
+       x="19.909893"
+       y="76.103264"
        id="text3-6"><tspan
          sodipodi:role="line"
          id="tspan3-7"
          style="font-size:7.05556px;stroke-width:0.4;stroke-dasharray:none"
-         x="-19.581848"
-         y="60.62677">Traffic</tspan></text>
+         x="19.909893"
+         y="76.103264">Traffic</tspan></text>
     <rect
-       style="fill:#ff3fea;stroke:#000000;stroke-width:0.529167;fill-opacity:1"
+       style="fill:#ff3fea;fill-opacity:1;stroke:#000000;stroke-width:0.529167"
        id="rect1-2"
        width="61.096062"
        height="31.779438"
-       x="148.1107"
-       y="32.557846"
+       x="187.60245"
+       y="48.03434"
        ry="6.5648522" />
     <path
        style="fill:#78ef65;stroke:#000000;stroke-width:1;stroke-dasharray:none;marker-end:url(#Triangle-9)"
-       d="m 80.635995,50.332248 62.617755,0"
+       d="m 120.12774,65.808741 h 62.61775"
        id="path2-3"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
-       x="162.36412"
-       y="50.59317"
+       x="201.85587"
+       y="66.069664"
        id="text2-0"><tspan
          sodipodi:role="line"
          id="tspan2-8"
          style="font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
-         x="162.36412"
-         y="50.59317">{{.bv}}</tspan></text>
+         x="201.85587"
+         y="66.069664">{{.BV}}</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
-       x="158.46779"
-       y="28.071718"
+       x="197.95953"
+       y="43.54821"
        id="text3-7"><tspan
          sodipodi:role="line"
          id="tspan3-8"
          style="font-size:7.05556px;stroke-width:0.4;stroke-dasharray:none"
-         x="158.46779"
-         y="28.071718">Backend</tspan></text>
+         x="197.95953"
+         y="43.54821">Backend</tspan></text>
   </g>
 </svg>

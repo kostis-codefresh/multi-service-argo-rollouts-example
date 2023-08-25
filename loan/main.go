@@ -77,6 +77,9 @@ func (loanApp *LoanApplication) serveFiles(w http.ResponseWriter, r *http.Reques
 	if p == "./" {
 		loanApp.home(w, r)
 		return
+	} else if p == "./diagram.svg" {
+		loanApp.showDiagram(w, r)
+		return
 	} else {
 		p = filepath.Join("./static/", path.Clean(upath))
 	}
@@ -104,6 +107,35 @@ func (loanApp *LoanApplication) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err = t.Execute(w, loanApp)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error executing template: %v", err)
+		return
+	}
+}
+
+func (loanApp *LoanApplication) showDiagram(w http.ResponseWriter, r *http.Request) {
+
+	t, err := template.ParseFiles("./static/diagram.svg")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error parsing template: %v", err)
+		return
+	}
+
+	type versions struct {
+		FV string
+		BV string
+	}
+
+	versionsFound := versions{}
+	versionsFound.FV = loanApp.AppVersion
+	versionsFound.BV = loanApp.BackendVersion
+
+	w.Header().Set("Content-Type", "image/svg+xml")
+	w.Header().Set("Accept-Ranges", "bytes")
+
+	err = t.Execute(w, versionsFound)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		log.Printf("Error executing template: %v", err)
