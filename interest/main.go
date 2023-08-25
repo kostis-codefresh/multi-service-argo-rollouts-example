@@ -26,7 +26,7 @@ func main() {
 		app_version = "dev"
 	}
 
-	// Kubernetes check if app is ok
+	// Allow front-end to retrieve version
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, app_version)
 	})

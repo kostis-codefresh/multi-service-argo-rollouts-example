@@ -6,10 +6,42 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
+type LoanApplication struct {
+	AppVersion     string
+	BackendVersion string
+	BackendHost    string
+	BackendPort    string
+	InterestRate   int
+	LoanAmount     int
+}
+
 func main() {
+
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
+
+	loanApp := LoanApplication{}
+
+	loanApp.AppVersion = os.Getenv("APP_VERSION")
+	if len(loanApp.AppVersion) == 0 {
+		loanApp.AppVersion = "dev"
+	}
+
+	loanApp.BackendHost = os.Getenv("BACKEND_HOST")
+	if len(loanApp.BackendHost) == 0 {
+		loanApp.BackendHost = "interest"
+	}
+
+	loanApp.BackendPort = os.Getenv("BACKEND_PORT")
+	if len(loanApp.BackendPort) == 0 {
+		loanApp.BackendPort = "8080"
+	}
 
 	http.HandleFunc("/health/live", func(w http.ResponseWriter, r *http.Request) {
 		_, err := getInterestRate()
@@ -59,8 +91,8 @@ func main() {
 		`, loanAmount, quote)
 	})
 
-	fmt.Println("Listening now at port 8080")
-	err := http.ListenAndServe(":8080", nil)
+	fmt.Printf("Frontend version %s is listening now at port %s\n", loanApp.AppVersion, port)
+	err := http.ListenAndServe(":"+port, nil)
 	log.Fatal(err)
 }
 
