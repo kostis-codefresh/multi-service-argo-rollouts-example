@@ -62,6 +62,8 @@ func main() {
 		fmt.Fprintln(w, "yes")
 	})
 
+	loanApp.findBackendVersion()
+
 	http.HandleFunc("/", loanApp.serveFiles)
 
 	fmt.Printf("Frontend version %s is listening now at port %s\n", loanApp.AppVersion, port)
@@ -79,6 +81,16 @@ func (loanApp *LoanApplication) serveFiles(w http.ResponseWriter, r *http.Reques
 		p = filepath.Join("./static/", path.Clean(upath))
 	}
 	http.ServeFile(w, r, p)
+}
+
+func (loanApp *LoanApplication) findBackendVersion() {
+	version, err := loanApp.callBackend("version")
+	if err != nil {
+		log.Println("Interest error :", err)
+		version = "unknown"
+	}
+
+	loanApp.BackendVersion = version
 }
 
 func (loanApp *LoanApplication) home(w http.ResponseWriter, r *http.Request) {
@@ -107,12 +119,14 @@ func (loanApp *LoanApplication) handleFormSubmission(w http.ResponseWriter, r *h
 	}
 
 	quote := ""
-	interestFound, err := loanApp.getInterestRate()
+	interestFound, err := loanApp.callBackend("api/v1/interest")
 	if err != nil {
 		log.Println("Interest error :", err)
 		quote = "Could not get interest. Sorry!"
 	} else {
-		quote = offerQuote(loanAmount, interestFound)
+		log.Println("Found interest rate " + interestFound)
+		interestConverted, _ := strconv.Atoi(interestFound)
+		quote = offerQuote(loanAmount, interestConverted)
 	}
 	loanApp.LoanResult = quote
 
@@ -145,23 +159,25 @@ func offerQuote(loan int, interest int) string {
 
 }
 
-func (loanApp *LoanApplication) getInterestRate() (rate int, err error) {
-	url, err := url.Parse("http://interest:8080/api/v1/interest")
-	if err != nil {
-		log.Fatal(err)
-	}
-	url.Host = loanApp.BackendHost + ":" + loanApp.BackendPort
+func (loanApp *LoanApplication) callBackend(path string) (result string, err error) {
 
-	resp, err := http.Get(url.String())
+	backendUrl := url.URL{
+		Scheme: "http",
+		Host:   loanApp.BackendHost + ":" + loanApp.BackendPort,
+		Path:   path,
+	}
+
+	url := backendUrl.String()
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Printf("Could not access %s, got %s\n ", url, err)
-		return 0, errors.New("Could not access " + url.String())
+		return "", errors.New("Could not access " + url)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		log.Println("Non-OK HTTP status:", resp.StatusCode)
-		return 0, errors.New("Could not access " + url.String())
+		return "", errors.New("Could not access " + url)
 	}
 
 	log.Printf("Response status of %s: %s\n", url, resp.Status)
@@ -169,8 +185,8 @@ func (loanApp *LoanApplication) getInterestRate() (rate int, err error) {
 	buf := new(bytes.Buffer)
 	_, err = buf.ReadFrom(resp.Body)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	log.Println("Found interest rate " + buf.String())
-	return strconv.Atoi(buf.String())
+
+	return buf.String(), nil
 }
