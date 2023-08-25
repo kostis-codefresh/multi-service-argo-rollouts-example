@@ -44,10 +44,17 @@
 
       <div class="entry">
         <form method="post">
-           	Enter your loan amount to see the interest. $<input name="loan" type="number" value="  {{ .InterestRate }} ">
-          	<br/>
+           	Enter your loan amount to see the interest. $<input name="loan" type="number" value="{{ .LoanAmount }}">
            	<input type="submit">
            	</form>
+
+      </div>
+
+      <div class="entry">
+        <span id="finalAmount">
+          {{ .LoanResult }} 
+           	
+        </span>
 
       </div>
 
