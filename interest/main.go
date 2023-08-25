@@ -16,6 +16,11 @@ var app_version = "dev"
 
 func main() {
 
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
+
 	app_version = os.Getenv("APP_VERSION")
 	if len(app_version) == 0 {
 		app_version = "dev"
@@ -44,8 +49,8 @@ func main() {
 
 	http.HandleFunc("/", serveFiles)
 
-	fmt.Printf("Backend version %s is listening now at port 8080\n", app_version)
-	err := http.ListenAndServe(":8080", nil)
+	fmt.Printf("Backend version %s is listening now at port %s\n", app_version, port)
+	err := http.ListenAndServe(":"+port, nil)
 	log.Fatal(err)
 }
 
