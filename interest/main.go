@@ -2,13 +2,24 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
+	"path"
+	"path/filepath"
 	"time"
 )
 
+var app_version = "dev"
+
 func main() {
+
+	app_version = os.Getenv("APP_VERSION")
+	if len(app_version) == 0 {
+		app_version = "dev"
+	}
 
 	// Kubernetes check if app is ok
 	http.HandleFunc("/health/live", func(w http.ResponseWriter, r *http.Request) {
@@ -26,16 +37,29 @@ func main() {
 		fmt.Fprint(w, (calculatedInterest.Intn(26) + 10))
 	})
 
-	http.HandleFunc("/api/", http.NotFound)
+	http.HandleFunc("/", serveFiles)
 
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	fmt.Fprintln(w, "<html>I calculate interests. Call <a href='api/v1/interest'>api/v1/interest</a> to get your quote.</html>")
-	// })
-
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fs)
-
-	fmt.Println("Listening now at port 8080")
+	fmt.Printf("Backend version %s is listening now at port 8080\n", app_version)
 	err := http.ListenAndServe(":8080", nil)
 	log.Fatal(err)
+}
+
+func serveFiles(w http.ResponseWriter, r *http.Request) {
+	upath := r.URL.Path
+	p := "." + upath
+	if p == "./" {
+		home(w, r)
+		return
+	} else {
+		p = filepath.Join("./static/", path.Clean(upath))
+	}
+	http.ServeFile(w, r, p)
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Execute(w, app_version)
 }
