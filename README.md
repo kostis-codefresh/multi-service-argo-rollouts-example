@@ -1,5 +1,8 @@
-# multi-service-argo-rollouts-example
-Example with Argo Rollouts with many services
+# Using Argo Rollouts with many microservices
+
+Example with Argo Rollouts with backend and frontend
+
+![Dashboard](loan/static/diagram.svg)
 
 ## Run only the backend manually
 
