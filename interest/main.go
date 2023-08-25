@@ -59,7 +59,14 @@ func serveFiles(w http.ResponseWriter, r *http.Request) {
 func home(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/index.html")
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error parsing template: %v", err)
+		return
 	}
-	t.Execute(w, app_version)
+	err = t.Execute(w, app_version)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error executing template: %v", err)
+		return
+	}
 }
