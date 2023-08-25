@@ -30,6 +30,11 @@ spec:
       containers:
       - name: my-frontend-container
         image: docker.io/kostiscodefresh/loan:latest
+        env:
+        - name: APP_VERSION
+          value: "1.0"
+        - name: BACKEND_HOST
+          value: "backend-active"          
         ports:
         - name: http
           containerPort: 8080
