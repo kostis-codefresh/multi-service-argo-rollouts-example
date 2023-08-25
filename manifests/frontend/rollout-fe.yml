@@ -32,9 +32,19 @@ spec:
         image: docker.io/kostiscodefresh/loan:latest
         env:
         - name: APP_VERSION
-          value: "1.0"
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: my-frontend-settings
+              # Specify the key associated with the value
+              key: APP_VERSION
         - name: BACKEND_HOST
-          value: "backend-active"          
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: my-frontend-settings
+              # Specify the key associated with the value
+              key: BACKEND_HOST         
         ports:
         - name: http
           containerPort: 8080

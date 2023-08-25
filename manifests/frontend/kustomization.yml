@@ -1,0 +1,10 @@
+# declare ConfigMap as a resource
+resources:
+- rollout-fe.yml
+
+# declare ConfigMap from a ConfigMapGenerator
+configMapGenerator:
+- name: my-frontend-settings
+  literals: 
+  - APP_VERSION=2.0
+  - BACKEND_HOST="backend-preview" 
