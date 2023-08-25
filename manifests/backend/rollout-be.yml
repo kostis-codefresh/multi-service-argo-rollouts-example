@@ -30,6 +30,9 @@ spec:
       containers:
       - name: my-backend-container
         image: docker.io/kostiscodefresh/interest:latest
+        env:
+        - name: APP_VERSION
+          value: "1.0"
         ports:
         - name: http
           containerPort: 8080
