@@ -8,7 +8,10 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path"
+	"path/filepath"
 	"strconv"
+	"text/template"
 )
 
 type LoanApplication struct {
@@ -59,34 +62,63 @@ func main() {
 		fmt.Fprintln(w, "yes")
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
-		loanAmount := parseLoanAmount(r)
+	// 	loanAmount := parseLoanAmount(r)
 
-		quote := ""
-		interestFound, err := getInterestRate(loanApp)
-		if err != nil {
-			log.Println("Interest error :", err)
-			quote = "Could not get interest. Sorry!"
-		} else {
-			quote = offerQuote(loanAmount, interestFound)
-		}
+	// 	quote := ""
+	// 	interestFound, err := getInterestRate(loanApp)
+	// 	if err != nil {
+	// 		log.Println("Interest error :", err)
+	// 		quote = "Could not get interest. Sorry!"
+	// 	} else {
+	// 		quote = offerQuote(loanAmount, interestFound)
+	// 	}
 
-		fmt.Fprintf(w, `<html>
-		<form method="post">
-		Enter your loan amount to see the interest. $<input name="loan" type="number" value="%d">
-		<br/>
-		<input type="submit">
-		</form>
-		<br/>
-		%s
-		</html>
-		`, loanAmount, quote)
-	})
+	// 	fmt.Fprintf(w, `<html>
+	// 	<form method="post">
+	// 	Enter your loan amount to see the interest. $<input name="loan" type="number" value="%d">
+	// 	<br/>
+	// 	<input type="submit">
+	// 	</form>
+	// 	<br/>
+	// 	%s
+	// 	</html>
+	// 	`, loanAmount, quote)
+	// })
+
+	http.HandleFunc("/", loanApp.serveFiles)
 
 	fmt.Printf("Frontend version %s is listening now at port %s\n", loanApp.AppVersion, port)
 	err := http.ListenAndServe(":"+port, nil)
 	log.Fatal(err)
+}
+
+func (loanApp LoanApplication) serveFiles(w http.ResponseWriter, r *http.Request) {
+	upath := r.URL.Path
+	p := "." + upath
+	if p == "./" {
+		loanApp.home(w, r)
+		return
+	} else {
+		p = filepath.Join("./static/", path.Clean(upath))
+	}
+	http.ServeFile(w, r, p)
+}
+
+func (loanApp LoanApplication) home(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/index.html")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error parsing template: %v", err)
+		return
+	}
+	err = t.Execute(w, loanApp)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error executing template: %v", err)
+		return
+	}
 }
 
 func parseLoanAmount(r *http.Request) int {

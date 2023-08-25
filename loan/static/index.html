@@ -19,9 +19,14 @@
 
       <div class="entry">
         <span id="version">
-          My version is {{ . }} also available at <a href='version'>version</a>
+          My version is {{ .AppVersion }} also available at <a href='version'>version</a>
         </span>
       </div>
+      <div class="entry">
+        <span id="backend">
+          I use a backend at <a href="http://{{ .BackendHost }}:{{ .BackendPort }}">{{ .BackendHost }}:{{ .BackendPort }}</a> Backend has version {{ .BackendVersion }}
+        </span>
+      </div>      
       <div class="entry">
         <span id="description">
           I calculate interests. Call <a href='api/v1/interest'>api/v1/interest</a> to get your quote.
@@ -35,6 +40,15 @@
             <li>Readiness endpoint is at <a href='health/ready'>health/ready</a></li>
           </ul>
         </span>
+      </div>
+
+      <div class="entry">
+        <form method="post">
+           	Enter your loan amount to see the interest. $<input name="loan" type="number" value="  {{ .InterestRate }} ">
+          	<br/>
+           	<input type="submit">
+           	</form>
+
       </div>
 
 
