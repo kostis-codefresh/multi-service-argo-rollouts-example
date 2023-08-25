@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 )
@@ -43,27 +44,19 @@ func main() {
 		loanApp.BackendPort = "8080"
 	}
 
-	http.HandleFunc("/health/live", func(w http.ResponseWriter, r *http.Request) {
-		_, err := getInterestRate()
-		if err != nil {
-			http.Error(w, "down!", http.StatusServiceUnavailable)
-		} else {
-			fmt.Fprintln(w, "up")
-		}
-
-		// fmt.Fprintln(w, "up")
+	// Allow anybody to retrieve version
+	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, loanApp.AppVersion)
 	})
 
+	// Kubernetes check if app is ok
+	http.HandleFunc("/health/live", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "up")
+	})
+
+	// Kubernetes check if app can serve requests
 	http.HandleFunc("/health/ready", func(w http.ResponseWriter, r *http.Request) {
-		// _, err := getInterestRate()
-		// if err != nil {
-		// 	http.Error(w, "nope!", http.StatusServiceUnavailable)
-		// } else {
-		// 	fmt.Fprintln(w, "yes")
-		// }
-
 		fmt.Fprintln(w, "yes")
-
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -71,7 +64,7 @@ func main() {
 		loanAmount := parseLoanAmount(r)
 
 		quote := ""
-		interestFound, err := getInterestRate()
+		interestFound, err := getInterestRate(loanApp)
 		if err != nil {
 			log.Println("Interest error :", err)
 			quote = "Could not get interest. Sorry!"
@@ -123,18 +116,23 @@ func offerQuote(loan int, interest int) string {
 
 }
 
-func getInterestRate() (rate int, err error) {
-	url := "http://interest:8080/api/v1/interest"
-	resp, err := http.Get(url)
+func getInterestRate(loanApplication LoanApplication) (rate int, err error) {
+	url, err := url.Parse("http://interest:8080/api/v1/interest")
+	if err != nil {
+		log.Fatal(err)
+	}
+	url.Host = loanApplication.BackendHost + ":" + loanApplication.BackendPort
+
+	resp, err := http.Get(url.String())
 	if err != nil {
 		log.Printf("Could not access %s, got %s\n ", url, err)
-		return 0, errors.New("Could not access " + url)
+		return 0, errors.New("Could not access " + url.String())
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		log.Println("Non-OK HTTP status:", resp.StatusCode)
-		return 0, errors.New("Could not access " + url)
+		return 0, errors.New("Could not access " + url.String())
 	}
 
 	log.Printf("Response status of %s: %s\n", url, resp.Status)
