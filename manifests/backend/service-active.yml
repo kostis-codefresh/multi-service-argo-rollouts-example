@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: loan
+  name: backend-active
 spec:
   type: ClusterIP
   selector:
-    app: loan
+    app: interest
   ports:
     - name: http
       protocol: TCP
