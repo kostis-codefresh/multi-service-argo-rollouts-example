@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  APP_VERSION: "2.0"
+  BACKEND_HOST: backend-preview
+kind: ConfigMap
+metadata:
+  name: my-frontend-settings-4b7hkt7294

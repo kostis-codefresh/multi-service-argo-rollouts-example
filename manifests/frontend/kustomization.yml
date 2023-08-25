@@ -1,6 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 # declare ConfigMap as a resource
 resources:
 - rollout-fe.yml
+
+configurations:
+  - https://argoproj.github.io/argo-rollouts/features/kustomize/rollout-transform.yaml
+
 
 # declare ConfigMap from a ConfigMapGenerator
 configMapGenerator:
