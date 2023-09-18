@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-plain-backend
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: interest
+  template:
+    metadata:
+      labels:
+        app: interest
+    spec:
+      containers:
+      - name: my-container
+        image: docker.io/kostiscodefresh/interest:latest
+        env:
+        - name: APP_VERSION
+          value: "1.0"                                                                                                                                          
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080    
