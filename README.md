@@ -2,7 +2,7 @@
 
 Example with Argo Rollouts with backend and frontend
 
-![Dashboard](loan/static/diagram.svg)
+![Dashboard](src/loan/static/diagram.svg)
 
 ## Run only the backend manually
 
@@ -35,3 +35,15 @@ docker compose up
 ```
 
 And now you can use the same URLs as above to access the services.
+
+## Run on Kubernetes as deployments
+
+```
+cd manifests/plain
+kubectl create ns plain
+kubectl apply -f . -n plain
+kubectl port-forward svc/my-plain-backend-service 8000:8080 -n plain
+kubectl port-forward svc/my-plain-frontend-service 9000:8080 -n plain
+```
+
+You can now access the backend at `http://localhost:8000` and the backend at `http://localhost:9000`
