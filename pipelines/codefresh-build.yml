@@ -1,0 +1,68 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "prepare" 
+  - "build"
+
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "kostis-codefresh/multi-service-argo-rollouts-example"
+    revision: "main"
+    git: "github-1"
+    stage: "prepare"
+
+  lint_backend:
+    title: "Linting Backend"
+    type: "freestyle" 
+    image: "golangci/golangci-lint" 
+    working_directory: "${{clone}}/interest" 
+    fail_fast: false
+    commands:
+      - "golangci-lint run -v"
+    environment:
+      - GOPATH=/codefresh/volume/go
+      - CGO_ENABLED=0
+    stage: "prepare"  
+  lint_frontend:
+    title: "Linting frontend"
+    type: "freestyle" 
+    image: "golangci/golangci-lint" 
+    working_directory: "${{clone}}/loan" 
+    fail_fast: false
+    commands:
+      - "golangci-lint run -v"
+    environment:
+      - GOPATH=/codefresh/volume/go
+      - CGO_ENABLED=0
+    stage: "prepare"     
+
+
+
+  build_be:
+    title: "Building Backend image"
+    type: "build"
+    image_name: "kostiscodefresh/interest"
+    working_directory: "${{clone}}/interest"
+    tag: latest
+    tags:
+    - "latest"
+    dockerfile: "Dockerfile"
+    stage: "build"
+
+  build_fe:
+    title: "Building Frontend image"
+    type: "build"
+    image_name: "kostiscodefresh/loan"
+    working_directory: "${{clone}}/loan"
+    tag: latest
+    tags:
+    - "latest"
+    dockerfile: "Dockerfile"
+    stage: "build"
+ 
