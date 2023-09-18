@@ -9,7 +9,7 @@ Example with Argo Rollouts with backend and frontend
 Install [GoLang](https://go.dev/) locally
 
 ```
-cd interest
+cd src/interest
 APP_VERSION=1.2  go run .
 ```
 You can now acces the backend at `http://localhost:8080`
@@ -19,7 +19,7 @@ You can now acces the backend at `http://localhost:8080`
 Install [GoLang](https://go.dev/) locally
 
 ```
-cd loan
+cd src/loan
 APP_VERSION=1.4 PORT=9000 BACKEND_HOST=localhost go run .
 ```
 
@@ -30,6 +30,7 @@ You can now access the backend at `http://localhost:9000`
 Install [Docker compose](https://docs.docker.com/compose/) (no need for local GoLang installation)
 
 ```
+cd src
 docker compose up
 ```
 

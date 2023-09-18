@@ -21,7 +21,7 @@ steps:
     title: "Linting Backend"
     type: "freestyle" 
     image: "golangci/golangci-lint" 
-    working_directory: "${{clone}}/interest" 
+    working_directory: "${{clone}}/src/interest" 
     fail_fast: false
     commands:
       - "golangci-lint run -v"
@@ -33,7 +33,7 @@ steps:
     title: "Linting frontend"
     type: "freestyle" 
     image: "golangci/golangci-lint" 
-    working_directory: "${{clone}}/loan" 
+    working_directory: "${{clone}}/src/loan" 
     fail_fast: false
     commands:
       - "golangci-lint run -v"
@@ -48,7 +48,7 @@ steps:
     title: "Building Backend image"
     type: "build"
     image_name: "kostiscodefresh/interest"
-    working_directory: "${{clone}}/interest"
+    working_directory: "${{clone}}/src/interest"
     tag: latest
     tags:
     - "latest"
@@ -59,7 +59,7 @@ steps:
     title: "Building Frontend image"
     type: "build"
     image_name: "kostiscodefresh/loan"
-    working_directory: "${{clone}}/loan"
+    working_directory: "${{clone}}/src/loan"
     tag: latest
     tags:
     - "latest"
