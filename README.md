@@ -23,7 +23,7 @@ cd loan
 APP_VERSION=1.4 PORT=9000 BACKEND_HOST=localhost go run .
 ```
 
-You can now acces the backend at `http://localhost:9000`
+You can now access the backend at `http://localhost:9000`
 
 ## Run both of them at the same time
 
