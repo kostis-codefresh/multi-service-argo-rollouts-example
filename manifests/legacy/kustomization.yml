@@ -3,11 +3,6 @@ kind: Kustomization
 # declare ConfigMap as a resource
 resources:
 - rollout-fe.yml
-- rollout-be.yml
-- backend-active.yml
-- backend-preview.yml
-- frontend-active.yml
-- frontend-preview.yml
 
 configurations:
   - https://argoproj.github.io/argo-rollouts/features/kustomize/rollout-transform.yaml
