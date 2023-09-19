@@ -62,8 +62,6 @@ func main() {
 		fmt.Fprintln(w, "yes")
 	})
 
-	loanApp.findBackendVersion()
-
 	http.HandleFunc("/", loanApp.serveFiles)
 
 	fmt.Printf("Frontend version %s is listening now at port %s\n", loanApp.AppVersion, port)
@@ -98,6 +96,7 @@ func (loanApp *LoanApplication) findBackendVersion() {
 
 func (loanApp *LoanApplication) home(w http.ResponseWriter, r *http.Request) {
 
+	loanApp.findBackendVersion()
 	loanApp.handleFormSubmission(w, r)
 
 	t, err := template.ParseFiles("./static/index.html")
