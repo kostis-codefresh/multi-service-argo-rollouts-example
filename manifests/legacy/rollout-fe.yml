@@ -34,16 +34,12 @@ spec:
         - name: APP_VERSION
           valueFrom:
             configMapKeyRef:
-              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
               name: my-frontend-settings
-              # Specify the key associated with the value
               key: APP_VERSION
         - name: BACKEND_HOST
           valueFrom:
             configMapKeyRef:
-              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
               name: my-frontend-settings
-              # Specify the key associated with the value
               key: BACKEND_HOST         
         ports:
         - name: http

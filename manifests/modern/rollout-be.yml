@@ -32,7 +32,7 @@ spec:
         image: docker.io/kostiscodefresh/interest:latest
         env:
         - name: APP_VERSION
-          value: "5.0"
+          value: "1.0"
         ports:
         - name: http
           containerPort: 8080
