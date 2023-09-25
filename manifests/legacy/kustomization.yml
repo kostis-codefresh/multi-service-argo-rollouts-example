@@ -12,5 +12,5 @@ configurations:
 configMapGenerator:
 - name: my-frontend-settings
   literals: 
-  - APP_VERSION=1.0
-  - BACKEND_HOST="backend-active" 
+  - APP_VERSION=2.0
+  - BACKEND_HOST="backend-preview" 
