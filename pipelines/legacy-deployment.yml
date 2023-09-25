@@ -1,0 +1,94 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "prepare"
+  - "backend"
+  - "both"
+  - "promote"  
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "kostis-codefresh/multi-service-argo-rollouts-example"
+    # Clone the master branch. Or, use ${{CF_BRANCH}} to get branch name from trigger
+    # Learn more at https://codefresh.io/docs/docs/codefresh-yaml/variables/
+    revision: "main"
+    stage: "prepare"
+    
+  SanityCheck:
+    image: codefresh/kubectl
+    title: Sanity check
+    working_directory: "${{clone}}" 
+    stage: prepare
+    commands:
+      - kubectl config use-context demo-eks
+ 
+  StartBackend:
+     image: codefresh/kubectl
+     title: Deploy new backend
+     working_directory: "${{clone}}" 
+     stage: backend
+     commands:
+       - kubectl apply -f manifests/legacy/rollout-be.yml -n legacy --context demo-eks
+ 
+  SmokeTestsBackend:
+      image: alpine:3.9
+      title: Smoke tests backend
+      working_directory: "${{clone}}" 
+      stage: backend
+      commands:
+        - sleep 15 
+
+  WaitBackend:
+      type: pending-approval
+      title: Manual approval
+      description: QA for backend
+      stage: backend
+      timeout:
+        duration: 2 
+
+  StartFrontend:
+     image: codefresh/kubectl
+     title: Deploy new frontend
+     working_directory: "${{clone}}" 
+     stage: both
+     commands:
+       - kubectl apply -k manifests/legacy/. -n legacy --context demo-eks
+
+  SmokeTestsBoth:
+      image: alpine:3.9
+      title: Smoke tests both services
+      working_directory: "${{clone}}" 
+      stage: both
+      commands:
+        - sleep 15 
+
+  WaitFrontend:
+      type: pending-approval
+      title: Manual approval
+      description: QA for new versions
+      stage: both
+      timeout:
+        duration: 2
+        
+  PromoteFrontend:
+    image: kostiscodefresh/kubectl-argo-rollouts:latest
+    title: Promote Frontend
+    working_directory: "${{clone}}" 
+    stage: promote
+    commands:
+      - /app/kubectl-argo-rollouts-linux-amd64 promote my-frontend -n legacy --context demo-eks
+      
+  PromoteBackend:
+    image: kostiscodefresh/kubectl-argo-rollouts:latest
+    title: Promote Backend
+    working_directory: "${{clone}}" 
+    stage: promote
+    commands:
+      - /app/kubectl-argo-rollouts-linux-amd64 promote my-backend -n legacy --context demo-eks
+ 
+
