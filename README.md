@@ -2,6 +2,8 @@
 
 Example with Argo Rollouts with backend and frontend
 
+Read the full blog post at https://codefresh.io/blog/multi-service-progressive-delivery-with-argo-rollouts/ 
+
 ![Dashboard](src/loan/static/diagram.svg)
 
 ## Run only the backend manually
