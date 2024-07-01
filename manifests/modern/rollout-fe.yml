@@ -33,8 +33,9 @@ spec:
         env:
         - name: APP_VERSION
           value: "1.0"                                                                                                                                          
-        - name: BACKEND_HOST
-          value: "backend-preview"       
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/podinfo        
         ports:
         - name: http
           containerPort: 8080
@@ -47,3 +48,10 @@ spec:
           httpGet:
             path: /health/ready
             port: 8080    
+      volumes:
+        - name: config-volume
+          configMap:
+            name: frontend-settings
+            items:
+            - key: "labels"
+              path: "labels"
