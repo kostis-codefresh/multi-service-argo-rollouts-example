@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: my-backend
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     blueGreen: 
       # activeService specifies the service to update with the new template hash at time of promotion.
@@ -30,6 +30,7 @@ spec:
       containers:
       - name: my-backend-container
         image: docker.io/kostiscodefresh/interest:latest
+        imagePullPolicy: Always
         env:
         - name: APP_VERSION
           value: "1.0"

@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: my-frontend
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     blueGreen: 
       # activeService specifies the service to update with the new template hash at time of promotion.

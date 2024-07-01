@@ -78,8 +78,7 @@ kubectl-argo-rollouts get rollout my-backend -n modern
 ```
 cd manifests/legacy
 kubectl create ns legacy
-kubectl apply -f manifests/legacy/rollout-be.yml -n legacy
-kubectl apply -k manifests/legacy/. -n legacy
+kubectl apply -f . -n legacy
 kubectl port-forward svc/backend-active 8000:8080 -n legacy
 kubectl port-forward svc/backend-preview 8050:8080 -n legacy
 
