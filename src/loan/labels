@@ -1,0 +1,7 @@
+app="loan"
+canary-status="preview-deployment"
+io.codefresh/demo="in-container"
+role="preview"
+backendHost="localhost"
+backendPort="8080"
+

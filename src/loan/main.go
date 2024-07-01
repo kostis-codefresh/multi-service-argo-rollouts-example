@@ -16,6 +16,7 @@ import (
 
 type LoanApplication struct {
 	AppVersion     string
+	CurrentRole    string
 	BackendVersion string
 	BackendHost    string
 	BackendPort    string
@@ -37,15 +38,7 @@ func main() {
 		loanApp.AppVersion = "dev"
 	}
 
-	loanApp.BackendHost = os.Getenv("BACKEND_HOST")
-	if len(loanApp.BackendHost) == 0 {
-		loanApp.BackendHost = "interest"
-	}
-
-	loanApp.BackendPort = os.Getenv("BACKEND_PORT")
-	if len(loanApp.BackendPort) == 0 {
-		loanApp.BackendPort = "8080"
-	}
+	loanApp.readCurrentConfiguration()
 
 	// Allow anybody to retrieve version
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
